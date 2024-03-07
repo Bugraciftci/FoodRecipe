@@ -7,23 +7,29 @@
 
 import Foundation
 
+// ViewModel, View ile Model arasında veri akışını yönetir.
 class RecipeFinderViewModel: ObservableObject {
     @Published var selectedIngredients = Set<String>()
     @Published var recipes: [Recipe] = []
     @Published var isLoading = false
     
-    let allIngredients = ["Domates", "Biber", "Soğan", "Sarımsak", "Havuç", "Patates", "Elma", "Muz", "Portakal", "Limon"]
+    private let dataLoader: DataLoader
+    
+    init(dataLoader: DataLoader = DataLoader()) {
+        self.dataLoader = dataLoader
+        loadIngredients()
+    }
+    
+    var allIngredients: [String] = []
+    
+    func loadIngredients() {
+        self.allIngredients = dataLoader.loadAllIngredients()
+    }
     
     func findRecipes() {
         isLoading = true
-        // Simülasyon için gecikme ekleniyor
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            // Simülasyon: API yanıtı gibi davranılıyor
-            self.recipes = [
-                Recipe(name: "Yemek 1", ingredients: ["Domates", "Biber"]),
-                Recipe(name: "Yemek 2", ingredients: ["Soğan", "Sarımsak"]),
-                Recipe(name: "Yemek 3", ingredients: ["Havuç", "Patates"])
-            ]
+            self.recipes = self.dataLoader.loadRecipes(with: Array(self.selectedIngredients))
             self.isLoading = false
         }
     }
@@ -34,5 +40,11 @@ class RecipeFinderViewModel: ObservableObject {
         } else {
             selectedIngredients.insert(ingredient)
         }
+    }
+    
+    func resetSelectionsAndRecipes() {
+        self.selectedIngredients.removeAll()
+        self.recipes.removeAll()
+        // Kullanıcıyı seçim ekranına geri getir
     }
 }

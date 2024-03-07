@@ -29,7 +29,6 @@ struct MultipleSelectionRow: View {
 struct MultipleSelectionRowView_Previews: PreviewProvider {
     static var previews: some View {
         MultipleSelectionRow(title: "Tomato", isSelected: true) {
-            // Action when the row is selected
         }
     }
 }
