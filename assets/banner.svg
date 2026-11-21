@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 320" width="100%">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0D0F14"/>
+      <stop offset="50%" stop-color="#151822"/>
+      <stop offset="100%" stop-color="#1E1410"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#F5852E"/>
+      <stop offset="100%" stop-color="#29C78A"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="320" rx="24" fill="url(#bg)"/>
+  <circle cx="1060" cy="80" r="180" fill="#F5852E" opacity="0.08"/>
+  <circle cx="920" cy="250" r="140" fill="#29C78A" opacity="0.07"/>
+  <rect x="64" y="54" width="210" height="28" rx="14" fill="#F5852E" opacity="0.16"/>
+  <text x="82" y="73" fill="#F5852E" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif" font-size="12" font-weight="700" letter-spacing="1.5">SWIFT 6 · SWIFTUI · MVVM</text>
+  <text x="64" y="142" fill="#FFFFFF" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif" font-size="46" font-weight="800">FoodRecipe v2.0 — Culinary &amp; Macro Studio</text>
+  <text x="64" y="186" fill="#A8B0C2" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif" font-size="19" font-weight="500">Smart Pantry Ingredient Matcher · Live TheMealDB Recipe Sync · Hands-Free Step Timer · Swift Charts Macros</text>
+  <rect x="64" y="224" width="440" height="4" rx="2" fill="url(#accent)"/>
+  <text x="64" y="264" fill="#7D869C" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14">actor RemoteImageCache  |  Dynamic Portion Scaling  |  Aisle-Grouped Smart Shopping List</text>
+</svg>

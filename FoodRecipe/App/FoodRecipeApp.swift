@@ -1,17 +1,12 @@
-//
-//  FoodRecipeApp.swift
-//  FoodRecipe
-//
-//  Created by Muhammed Buğra on 8.02.2024.
-//
-
 import SwiftUI
 
 @main
 struct FoodRecipeApp: App {
+    @StateObject private var container = AppContainer()
+
     var body: some Scene {
         WindowGroup {
-            KitchenView(viewModel: RecipeFinderViewModel())
+            MainTabView(container: container)
         }
     }
 }
