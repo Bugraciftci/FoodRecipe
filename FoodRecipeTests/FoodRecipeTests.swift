@@ -1,4 +1,5 @@
 import XCTest
+@testable import FoodRecipe
 
 final class FoodRecipeTests: XCTestCase {
 
@@ -64,5 +65,44 @@ final class FoodRecipeTests: XCTestCase {
         let countBefore = store.shoppingList.count
         store.addIngredientsToShoppingList(salmon.ingredients, scaleFactor: 1.0, recipeTitle: salmon.title)
         XCTAssertGreaterThan(store.shoppingList.count, countBefore)
+    }
+
+    @MainActor
+    func testCookingSessionStepAdvanceAndTimerReset() {
+        let recipe = LiveRecipeRepository.curatedChefCatalog[0]
+        let vm = CookingSessionViewModel(recipe: recipe, servings: 2)
+
+        XCTAssertEqual(vm.currentStepIndex, 0)
+        XCTAssertEqual(vm.remainingSeconds, recipe.steps[0].durationSeconds)
+        XCTAssertEqual(vm.formattedRemainingTime, "08:00")
+
+        vm.completeCurrentStepAndAdvance()
+        XCTAssertEqual(vm.currentStepIndex, 1)
+        XCTAssertTrue(vm.completedStepNumbers.contains(recipe.steps[0].stepNumber))
+        XCTAssertEqual(vm.remainingSeconds, recipe.steps[1].durationSeconds)
+        XCTAssertEqual(vm.formattedRemainingTime, "03:00")
+
+        vm.goToPreviousStep()
+        XCTAssertEqual(vm.currentStepIndex, 0)
+        XCTAssertEqual(vm.formattedRemainingTime, "08:00")
+    }
+
+    @MainActor
+    func testMealPlannerGroupedShoppingItemsByAisle() {
+        let vm = MealPlannerViewModel()
+        let items = [
+            ShoppingListItem(name: "Wild Salmon", quantityText: "360 g", aisle: .proteins),
+            ShoppingListItem(name: "Chicken Breast", quantityText: "340 g", aisle: .proteins),
+            ShoppingListItem(name: "Avocado", quantityText: "2 whole", aisle: .produce),
+            ShoppingListItem(name: "Rolled Oats", quantityText: "100 g", aisle: .grainsAndPasta)
+        ]
+
+        let grouped = vm.groupedShoppingItems(from: items)
+        XCTAssertEqual(grouped.count, 3)
+        XCTAssertEqual(grouped[0].aisle, .produce)
+        XCTAssertEqual(grouped[0].items.count, 1)
+        XCTAssertEqual(grouped[1].aisle, .proteins)
+        XCTAssertEqual(grouped[1].items.count, 2)
+        XCTAssertEqual(grouped[2].aisle, .grainsAndPasta)
     }
 }

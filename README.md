@@ -7,6 +7,7 @@
   <img src="https://img.shields.io/badge/iOS_17%2B-000000?style=for-the-badge&logo=apple&logoColor=white" alt="iOS 17+" />
   <img src="https://img.shields.io/badge/Architecture-Protocol--Oriented_MVVM-F5852E?style=for-the-badge" alt="MVVM" />
   <img src="https://img.shields.io/badge/Swift_Charts-Macro_Telemetry-29C78A?style=for-the-badge" alt="Swift Charts" />
+  <img src="https://img.shields.io/badge/License-MIT-38BDF8?style=for-the-badge" alt="MIT License" />
 </p>
 
 **FoodRecipe v2.0** is a native iOS culinary discovery, smart pantry ingredient matcher, hands-free cooking timer, and macro meal planner built with **Swift 6**, **SwiftUI**, **Combine**, **Swift Charts**, and **Protocol-Oriented MVVM**.
@@ -99,8 +100,14 @@ FoodRecipe/
 ## Verification & Typecheck
 
 ```bash
-swiftc -typecheck \
+swiftc -typecheck -swift-version 6 \
   -sdk $(xcrun --sdk iphonesimulator --show-sdk-path) \
   -target arm64-apple-ios17.0-simulator \
-  $(find FoodRecipe -name '*.swift') FoodRecipeTests/FoodRecipeTests.swift
+  $(find FoodRecipe -name '*.swift')
+
+xcodebuild -project FoodRecipe.xcodeproj -list
 ```
+
+## License
+
+MIT — see [LICENSE](./LICENSE).

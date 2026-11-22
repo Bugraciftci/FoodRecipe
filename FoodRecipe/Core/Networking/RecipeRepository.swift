@@ -126,7 +126,9 @@ private struct MealDBItemDTO: Decodable {
             }
 
         let cuisine = Self.mapCuisine(area: strArea, category: strCategory)
-        let hashSeed = abs(idMeal.hashValue)
+        // Stable FNV-1a seed: Swift's `hashValue` is randomized per process launch,
+        // which would make estimated macros change every time the app starts.
+        let hashSeed = Int(Self.stableHash(idMeal) % 10_000)
         let calories = 380 + (hashSeed % 280)
         let protein = 22 + (hashSeed % 26)
         let carbs = 28 + (hashSeed % 38)
@@ -150,13 +152,22 @@ private struct MealDBItemDTO: Decodable {
         )
     }
 
+    static func stableHash(_ value: String) -> UInt64 {
+        var hash: UInt64 = 14_695_981_039_346_656_037
+        for byte in value.utf8 {
+            hash ^= UInt64(byte)
+            hash &*= 1_099_511_628_211
+        }
+        return hash
+    }
+
     private static func mapCuisine(area: String?, category: String?) -> CuisineCategory {
         let a = (area ?? "").lowercased()
         let c = (category ?? "").lowercased()
         if c.contains("dessert") { return .dessert }
         if a.contains("turkish") { return .turkish }
         if a.contains("italian") { return .italian }
-        if a.contains("Greek") || a.contains("greek") || a.contains("moroccan") || a.contains("spanish") { return .mediterranean }
+        if a.contains("greek") || a.contains("moroccan") || a.contains("spanish") { return .mediterranean }
         if a.contains("japanese") || a.contains("chinese") || a.contains("thai") || a.contains("indian") { return .asian }
         return .mediterranean
     }
@@ -260,7 +271,7 @@ extension LiveRecipeRepository {
             ],
             steps: [
                 CookingStep(stepNumber: 1, title: "Season & Sear Salmon", instruction: "Pat salmon fillets dry, season with sea salt, garlic, and dill, and sear skin-side down until crisp.", durationSeconds: 300, chefTip: "Press gently with a spatula for the first 20 seconds so the skin stays flat."),
-                CookingStep(stepNumber: 2, title: "Char Broccoli Florets", instruction: "Toss broccoli with olive oil andlemon zest and roast or pan-char until tender-crisp.", durationSeconds: 240, chefTip: nil),
+                CookingStep(stepNumber: 2, title: "Char Broccoli Florets", instruction: "Toss broccoli with olive oil and lemon zest and roast or pan-char until tender-crisp.", durationSeconds: 240, chefTip: nil),
                 CookingStep(stepNumber: 3, title: "Assemble Macro Bowl", instruction: "Layer warm quinoa, charred broccoli, sliced avocado, and flaked salmon. Drizzle with lemon olive oil dressing.", durationSeconds: 120, chefTip: nil)
             ]
         ),
