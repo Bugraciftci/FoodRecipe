@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Select Available iPhone Simulator
+        id: sim
+        run: |
+          SIM_ID=$(xcrun simctl list devices available -j | python3 -c '
+          import json, sys
+          data = json.load(sys.stdin)
+          for rt, devs in sorted(data.get("devices", {}).items(), reverse=True):
+              if "iOS" in rt:
+                  for d in devs:
+                      if "iPhone" in d.get("name", "") and d.get("isAvailable"):
+                          print(d["udid"])
+                          sys.exit(0)
+          sys.exit(1)
+          ')
+          echo "id=$SIM_ID" >> "$GITHUB_OUTPUT"
+          echo "Using simulator $SIM_ID"
+      - name: Build and Run Unit Tests
+        run: |
+          xcodebuild test \
+            -project FoodRecipe.xcodeproj \
+            -scheme FoodRecipe \
+            -destination "platform=iOS Simulator,id=${{ steps.sim.outputs.id }}" \
+            -only-testing:FoodRecipeTests \
+            CODE_SIGNING_ALLOWED=NO

@@ -3,6 +3,8 @@
 </div>
 
 <p align="center">
+  <a href="https://github.com/Bugraciftci/FoodRecipe/actions/workflows/ci.yml"><img src="https://github.com/Bugraciftci/FoodRecipe/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
+  <a href="https://github.com/Bugraciftci/FoodRecipe/releases/tag/v2.0.0"><img src="https://img.shields.io/badge/Release-v2.0.0-0EA5E9?style=for-the-badge" alt="Release v2.0.0" /></a>
   <img src="https://img.shields.io/badge/Swift_6.0-F05138?style=for-the-badge&logo=swift&logoColor=white" alt="Swift 6" />
   <img src="https://img.shields.io/badge/iOS_17%2B-000000?style=for-the-badge&logo=apple&logoColor=white" alt="iOS 17+" />
   <img src="https://img.shields.io/badge/Architecture-Protocol--Oriented_MVVM-F5852E?style=for-the-badge" alt="MVVM" />
